@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h1>Order</h1>
+            <h2 class="my-4">Order Inormation</h2>
+            <table class="table mb-5">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">No.</th>
+                        <td>{{object.pk}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Price</th>
+                        <td>{{object.amount}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Total</th>
+                        <td>{{object.tax_included}}</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Date of Order</th>
+                        <td>{{object.created_at|date:"Y-m-d f"}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">UID</th>
+                        <td>{{object.uid}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Zip Code</th>
+                        <td>{{shipping.0.fields.zipcode}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">State</th>
+                        <td>{{shipping.0.fields.prefecture}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">City</th>
+                        <td>{{shipping.0.fields.city}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Address1</th>
+                        <td>{{shipping.0.fields.address1}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Address2</th>
+                        <td>{{shipping.0.fields.address2}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Phone</th>
+                        <td>{{shipping.0.fields.tel}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <h2 class="my-4">Order Progress</h2>
+            <div>
+                {% if object.shipped_at %}
+                <div class="my-3 ">
+                    <button class="btn btn-primary" disabled>Already shipped: {{object.shipped_at}}</button>
+                </div>
+                {% else %}
+                <div class="my-3 ">
+                    <button class="btn btn-secondary" disabled>Still processing</button>
+                </div>
+                {% endif %}
+                {% if object.canceled_at %}
+                <div class="my-3 ">
+                    <button class="btn btn-danger" disabled>Canceled: {{object.canceled_at}}</button>
+                </div>
+                {% endif %}
+            </div>
+
+            <h2 class="my-4">List of Ordered Items</h2>
+            <table class="table mb-5">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><img src="/{{item.image}}" width="auto" height="100px"></td>
+                        <td>{{ item.name }}</td>
+                        <td>{{item.price}} AUD</td>
+                        <td>{{item.quantity}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
